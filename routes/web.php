@@ -14,14 +14,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Rutas de Google FUERA del middleware auth
 Route::get('/login/google', function () {
     return Socialite::driver('google')->redirect();
 })->name('login.google');
 
-// En web.php
 Route::get('/login/google/callback', function () {
-    // Solo agrega ->stateless() aquí:
     $googleUser = Socialite::driver('google')->stateless()->user();
 
     $user = User::updateOrCreate(
