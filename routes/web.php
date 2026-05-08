@@ -14,6 +14,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Google
 Route::get('/login/google', function () {
     return Socialite::driver('google')->redirect();
 })->name('login.google');
@@ -30,7 +31,54 @@ Route::get('/login/google/callback', function () {
     );
 
     Auth::login($user);
+    return redirect('/dashboard');
+});
 
+// GitHub
+Route::get('/auth/github', function () {
+    return Socialite::driver('github')->redirect();
+})->name('login.github');
+
+Route::get('/auth/github/callback', function () {
+    $githubUser = Socialite::driver('github')->stateless()->user();
+
+    $user = User::updateOrCreate(
+        ['email' => $githubUser->getEmail()],
+        [
+            'name' => $githubUser->getName() ?? $githubUser->getNickname(),
+            'password' => bcrypt('github-auth-' . $githubUser->getId()),
+        ]
+    );
+
+    Auth::login($user);
+    return redirect('/dashboard');
+});
+
+// Facebook
+Route::get('/login/facebook', function () {
+    return Socialite::driver('facebook')
+        ->setScopes(['public_profile'])
+        ->redirect();
+})->name('login.facebook');
+
+Route::get('/login/facebook/callback', function () {
+    $facebookUser = Socialite::driver('facebook')->stateless()->user();
+
+    $email = $facebookUser->getEmail();
+
+    if (!$email) {
+        $email = 'facebook_' . $facebookUser->getId() . '@facebook.com';
+    }
+
+    $user = User::updateOrCreate(
+        ['email' => $email],
+        [
+            'name' => $facebookUser->getName(),
+            'password' => bcrypt('facebook-auth-' . $facebookUser->getId()),
+        ]
+    );
+
+    Auth::login($user);
     return redirect('/dashboard');
 });
 

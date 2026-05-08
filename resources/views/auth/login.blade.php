@@ -54,27 +54,61 @@
     </form>
 
     <div style="margin-top:24px; text-align:center; position:relative; margin-bottom:20px;">
-        <div style="position:absolute; top:50%; left:0; width:100%; height:1px; background:#1a1a1a; z-index:1;"></div>
-        <span style="font-size:0.75rem; color:#555; background:#111; padding:0 12px; font-weight:500; position:relative; z-index:2;">
-            O entra con Google
-        </span>
-    </div>
+    <div style="position:absolute; top:50%; left:0; width:100%; height:1px; background:#1a1a1a; z-index:1;"></div>
+    <span style="font-size:0.75rem; color:#555; background:#111; padding:0 12px; font-weight:500; position:relative; z-index:2;">
+        O continúa con
+    </span>
+</div>
 
-    <div style="margin-bottom:32px;">
-        <a href="{{ route('login.google') }}" 
-           style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; background:#121212; border:1px solid #2a2a2a; color:#f5f5f5; border-radius:8px; padding:11px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:border-color 0.2s, background 0.2s; box-sizing:border-box;"
-           onmouseover="this.style.borderColor='#eab308'; this.style.background='#1a1a1a'"
-           onmouseout="this.style.borderColor='#2a2a2a'; this.style.background='#121212'">
-            <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" alt="Google" width="18px" height="18px">
-            Entrar con Google
-        </a>
-    </div>
+<div style="display:flex; flex-direction:column; gap:12px; margin-bottom:32px;">
 
-    <div style="padding-top:24px; border-top:1px solid #1a1a1a; text-align:center;">
-        <span style="font-size:0.75rem; color:#444;">¿No tienes cuenta? </span>
-        <a href="{{ route('register') }}" style="font-size:0.75rem; color:#eab308; text-decoration:none; font-weight:600;"
-           onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color='#eab308'">
-            Regístrate aquí
-        </a>
-    </div>
+    <a href="{{ route('login.google') }}" 
+       style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; background:#121212; border:1px solid #2a2a2a; color:#f5f5f5; border-radius:8px; padding:11px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:border-color 0.2s, background 0.2s; box-sizing:border-box;"
+       onmouseover="this.style.borderColor='#eab308'; this.style.background='#1a1a1a'"
+       onmouseout="this.style.borderColor='#2a2a2a'; this.style.background='#121212'">
+
+        <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png"
+             alt="Google"
+             width="18"
+             height="18">
+
+        Entrar con Google
+    </a>
+
+    <a href="{{ route('login.github') }}" 
+       style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; background:#121212; border:1px solid #2a2a2a; color:#f5f5f5; border-radius:8px; padding:11px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:border-color 0.2s, background 0.2s; box-sizing:border-box;"
+       onmouseover="this.style.borderColor='#eab308'; this.style.background='#1a1a1a'"
+       onmouseout="this.style.borderColor='#2a2a2a'; this.style.background='#121212'">
+
+        <svg height="18" width="18" viewBox="0 0 16 16" fill="white">
+            <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38
+            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+            -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07
+            -1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+            0 0 .67-.21 2.2.82a7.56 7.56 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82
+            .44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95
+            .29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8
+            c0-4.42-3.58-8-8-8z"/>
+        </svg>
+
+        Entrar con GitHub
+    </a>
+
+    <a href="{{ route('login.facebook') }}" 
+       style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; background:#121212; border:1px solid #2a2a2a; color:#f5f5f5; border-radius:8px; padding:11px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:border-color 0.2s, background 0.2s; box-sizing:border-box;"
+       onmouseover="this.style.borderColor='#eab308'; this.style.background='#1a1a1a'"
+       onmouseout="this.style.borderColor='#2a2a2a'; this.style.background='#121212'">
+
+        <svg height="18" width="18" viewBox="0 0 24 24" fill="#1877F2">
+            <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019
+            4.388 11.009 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413
+            c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514
+            c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24
+            C19.612 23.082 24 18.092 24 12.073z"/>
+        </svg>
+
+        Entrar con Facebook
+    </a>
+
+</div>
 </x-guest-layout>
