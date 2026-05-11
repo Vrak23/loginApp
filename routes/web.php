@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\CursoController;
+use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -83,6 +86,10 @@ Route::get('/login/facebook/callback', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/alumnos', [AlumnoController::class, 'index'])->name('web.alumnos.index');
+    Route::get('/cursos', [CursoController::class, 'index'])->name('web.cursos.index');
+    Route::get('/profesores', [ProfesorController::class, 'index'])->name('web.profesores.index');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

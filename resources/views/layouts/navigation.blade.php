@@ -15,6 +15,15 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('web.alumnos.index')" :active="request()->routeIs('web.alumnos.index')">
+                        Alumnos
+                    </x-nav-link>
+                    <x-nav-link :href="route('web.cursos.index')" :active="request()->routeIs('web.cursos.index')">
+                        Cursos
+                    </x-nav-link>
+                    <x-nav-link :href="route('web.profesores.index')" :active="request()->routeIs('web.profesores.index')">
+                        Profesores
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -69,6 +78,15 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('web.alumnos.index')" :active="request()->routeIs('web.alumnos.index')">
+                Alumnos
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('web.cursos.index')" :active="request()->routeIs('web.cursos.index')">
+                Cursos
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('web.profesores.index')" :active="request()->routeIs('web.profesores.index')">
+                Profesores
             </x-responsive-nav-link>
         </div>
 
