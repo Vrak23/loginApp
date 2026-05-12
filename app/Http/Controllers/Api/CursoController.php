@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Curso;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CursoResource;
+use App\Models\Curso;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 
 class CursoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
         $cursos = Curso::with(['horarios', 'matriculas'])->get();
 
-        return response()->json([
+        return CursoResource::collection($cursos)->additional([
             'success' => true,
             'message' => 'Listado de cursos obtenido correctamente.',
-            'data' => $cursos,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'nombre_curso' => ['required', 'string', 'max:255'],
@@ -37,31 +36,29 @@ class CursoController extends Controller
 
         $curso = Curso::create($validated);
 
-        return response()->json([
+        return (new CursoResource($curso))->additional([
             'success' => true,
             'message' => 'Curso creado correctamente.',
-            'data' => $curso,
-        ], 201);
+        ])->response()->setStatusCode(201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): JsonResponse
+    public function show(string $id)
     {
         $curso = Curso::with(['horarios', 'matriculas'])->findOrFail($id);
 
-        return response()->json([
+        return (new CursoResource($curso))->additional([
             'success' => true,
             'message' => 'Curso obtenido correctamente.',
-            'data' => $curso,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(Request $request, string $id)
     {
         $curso = Curso::findOrFail($id);
 
@@ -74,25 +71,23 @@ class CursoController extends Controller
 
         $curso->update($validated);
 
-        return response()->json([
+        return (new CursoResource($curso))->additional([
             'success' => true,
             'message' => 'Curso actualizado correctamente.',
-            'data' => $curso,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): JsonResponse
+    public function destroy(string $id)
     {
         $curso = Curso::findOrFail($id);
         $curso->delete();
 
-        return response()->json([
+        return (new CursoResource(null))->additional([
             'success' => true,
             'message' => 'Curso eliminado correctamente.',
-            'data' => null,
         ]);
     }
 }

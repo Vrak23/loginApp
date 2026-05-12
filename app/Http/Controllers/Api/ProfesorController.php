@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Profesor;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProfesorResource;
+use App\Models\Profesor;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 
 class ProfesorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
         $profesores = Profesor::with('matriculas')->get();
 
-        return response()->json([
+        return ProfesorResource::collection($profesores)->additional([
             'success' => true,
             'message' => 'Listado de profesores obtenido correctamente.',
-            'data' => $profesores,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
@@ -36,31 +35,29 @@ class ProfesorController extends Controller
 
         $profesor = Profesor::create($validated);
 
-        return response()->json([
+        return (new ProfesorResource($profesor))->additional([
             'success' => true,
             'message' => 'Profesor creado correctamente.',
-            'data' => $profesor,
-        ], 201);
+        ])->response()->setStatusCode(201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): JsonResponse
+    public function show(string $id)
     {
         $profesor = Profesor::with('matriculas')->findOrFail($id);
 
-        return response()->json([
+        return (new ProfesorResource($profesor))->additional([
             'success' => true,
             'message' => 'Profesor obtenido correctamente.',
-            'data' => $profesor,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(Request $request, string $id)
     {
         $profesor = Profesor::findOrFail($id);
 
@@ -72,25 +69,23 @@ class ProfesorController extends Controller
 
         $profesor->update($validated);
 
-        return response()->json([
+        return (new ProfesorResource($profesor))->additional([
             'success' => true,
             'message' => 'Profesor actualizado correctamente.',
-            'data' => $profesor,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): JsonResponse
+    public function destroy(string $id)
     {
         $profesor = Profesor::findOrFail($id);
         $profesor->delete();
 
-        return response()->json([
+        return (new ProfesorResource(null))->additional([
             'success' => true,
             'message' => 'Profesor eliminado correctamente.',
-            'data' => null,
         ]);
     }
 }

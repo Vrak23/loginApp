@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Matricula;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MatriculaResource;
+use App\Models\Matricula;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 
 class MatriculaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
         $matriculas = Matricula::with(['alumno', 'curso', 'profesor', 'horario'])->get();
 
-        return response()->json([
+        return MatriculaResource::collection($matriculas)->additional([
             'success' => true,
             'message' => 'Listado de matriculas obtenido correctamente.',
-            'data' => $matriculas,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'id_alumno' => ['required', 'exists:alumnos,id_alumno'],
@@ -41,31 +40,29 @@ class MatriculaController extends Controller
 
         $matricula = Matricula::create($validated)->load(['alumno', 'curso', 'profesor', 'horario']);
 
-        return response()->json([
+        return (new MatriculaResource($matricula))->additional([
             'success' => true,
             'message' => 'Matricula creada correctamente.',
-            'data' => $matricula,
-        ], 201);
+        ])->response()->setStatusCode(201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): JsonResponse
+    public function show(string $id)
     {
         $matricula = Matricula::with(['alumno', 'curso', 'profesor', 'horario'])->findOrFail($id);
 
-        return response()->json([
+        return (new MatriculaResource($matricula))->additional([
             'success' => true,
             'message' => 'Matricula obtenida correctamente.',
-            'data' => $matricula,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(Request $request, string $id)
     {
         $matricula = Matricula::findOrFail($id);
 
@@ -83,25 +80,23 @@ class MatriculaController extends Controller
         $matricula->update($validated);
         $matricula->load(['alumno', 'curso', 'profesor', 'horario']);
 
-        return response()->json([
+        return (new MatriculaResource($matricula))->additional([
             'success' => true,
             'message' => 'Matricula actualizada correctamente.',
-            'data' => $matricula,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): JsonResponse
+    public function destroy(string $id)
     {
         $matricula = Matricula::findOrFail($id);
         $matricula->delete();
 
-        return response()->json([
+        return (new MatriculaResource(null))->additional([
             'success' => true,
             'message' => 'Matricula eliminada correctamente.',
-            'data' => null,
         ]);
     }
 }

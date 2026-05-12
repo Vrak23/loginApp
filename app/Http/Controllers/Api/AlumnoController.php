@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Alumno;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AlumnoResource;
+use App\Models\Alumno;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 
 class AlumnoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
         $alumnos = Alumno::with('matriculas')->get();
 
-        return response()->json([
+        return AlumnoResource::collection($alumnos)->additional([
             'success' => true,
             'message' => 'Listado de alumnos obtenido correctamente.',
-            'data' => $alumnos,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
@@ -41,31 +40,29 @@ class AlumnoController extends Controller
 
         $alumno = Alumno::create($validated);
 
-        return response()->json([
+        return (new AlumnoResource($alumno))->additional([
             'success' => true,
             'message' => 'Alumno creado correctamente.',
-            'data' => $alumno,
-        ], 201);
+        ])->response()->setStatusCode(201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): JsonResponse
+    public function show(string $id)
     {
         $alumno = Alumno::with('matriculas')->findOrFail($id);
 
-        return response()->json([
+        return (new AlumnoResource($alumno))->additional([
             'success' => true,
             'message' => 'Alumno obtenido correctamente.',
-            'data' => $alumno,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(Request $request, string $id)
     {
         $alumno = Alumno::findOrFail($id);
 
@@ -82,25 +79,23 @@ class AlumnoController extends Controller
 
         $alumno->update($validated);
 
-        return response()->json([
+        return (new AlumnoResource($alumno))->additional([
             'success' => true,
             'message' => 'Alumno actualizado correctamente.',
-            'data' => $alumno,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): JsonResponse
+    public function destroy(string $id)
     {
         $alumno = Alumno::findOrFail($id);
         $alumno->delete();
 
-        return response()->json([
+        return (new AlumnoResource(null))->additional([
             'success' => true,
             'message' => 'Alumno eliminado correctamente.',
-            'data' => null,
         ]);
     }
 }
